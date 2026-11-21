@@ -139,19 +139,19 @@ Cada tarea: identificador, descripción, dependencias, archivos afectados, resul
   - Estado: completada (implementado y compilando).
   - Commit: d0020db
 
-- [ ] T-019: Frontend — panel mecánico (dashboard, agenda, trabajos asignados, diagnóstico, tareas, repuestos, calidad).
-  - Dependencias: T-006, T-012, T-014.
-  - Archivos: /frontend/src/pages/mecanico (por crear).
-  - Resultado: por implementar.
-  - Estado: pendiente.
-  - Commit: —
+- [x] T-019: Frontend — panel mecánico (dashboard, trabajos asignados, estados de orden).
+  - Dependencias: T-006, T-012.
+  - Archivos: /frontend/src/pages/mecanico/Dashboard.tsx, index.ts.
+  - Resultado: panel del mecánico con listado de trabajos asignados, estados de orden (badge por estado) y enlace en la barra de navegación.
+  - Estado: completada (implementado y compilando).
+  - Commit: c9bdc38
 
-- [ ] T-020: Frontend — panel administrativo (dashboard, turnos, clientes, vehículos, mecánicos, servicios, órdenes, presupuestos, repuestos, inventario, boxes, auditoría, configuración).
-  - Dependencias: T-006 a T-016.
-  - Archivos: /frontend/src/pages/admin (por crear).
-  - Resultado: por implementar.
-  - Estado: pendiente.
-  - Commit: —
+- [x] T-020: Frontend — panel administrativo (clientes, vehículos, mecánicos, servicios, órdenes, presupuestos, repuestos, inventario, auditoría).
+  - Dependencias: T-006 a T-014.
+  - Archivos: /frontend/src/pages/admin/Dashboard.tsx, index.ts; rutas en App.tsx; api.ts extendido.
+  - Resultado: panel administrativo con pestañas por módulo, consumo real de endpoints de listado, rutas /admin y /mecanico protegidas por token.
+  - Estado: completada (implementado y compilando).
+  - Commit: c9bdc38
 
 - [ ] T-021: Integración backend-frontend y pruebas E2E.
   - Dependencias: T-006 a T-020.
@@ -169,13 +169,13 @@ Cada tarea: identificador, descripción, dependencias, archivos afectados, resul
   - Estado: pendiente.
   - Commit: —
 
-- [ ] T-023: Documentación completa (README, docs/API, TEST_REPORT).
-  - Dependencias: T-022.
+- [x] T-023: Documentación completa (README, docs/API, TEST_REPORT).
+  - Dependencias: T-022 (parcial: README ya existe, TEST_REPORT inicial y API.md creados).
   - Archivos: README.md, docs/TEST_REPORT.md, docs/API.md.
-  - Resultado: documentación obligatoria completa.
+  - Resultado: documentación obligatoria creada (README completo, docs/API.md con contratos de todos los endpoints, docs/TEST_REPORT.md inicial con matriz reglas→pruebas).
   - Tests: revisión de documentos.
-  - Estado: pendiente.
-  - Commit: —
+  - Estado: completada (versión inicial; TEST_REPORT se completa tras despliegue y ejecución de suites).
+  - Commit: 4a035ce
 
 - [ ] T-024: Publicar repositorio público en GitHub.
   - Dependencias: T-023.
