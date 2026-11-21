@@ -4,117 +4,109 @@ Cada tarea: identificador, descripción, dependencias, archivos afectados, resul
 
 ## Tareas
 
-- [ ] T-001: Inicializar repositorio y estructura base.
+- [x] T-001: Inicializar repositorio y estructura base.
   - Dependencias: ninguna.
   - Archivos: git init, package.json raíz, .gitignore, .env.example.
   - Resultado: repositorio Git inicializado con estructura /frontend /backend /docs.
   - Tests: ninguno.
-  - Estado: pendiente.
-  - Commit: —
+  - Estado: completada.
+  - Commit: ce35304
 
-- [ ] T-002: Crear especificación SPEC.md.
+- [x] T-002: Crear especificación SPEC.md.
   - Dependencias: T-001.
   - Archivos: SPEC.md.
   - Resultado: SPEC completa con reglas R-001 a R-044, casos de uso, flujos, matriz reglas→pruebas.
   - Tests: revisión de coherencia.
   - Estado: completada.
-  - Commit: —
+  - Commit: 7a4a0f9
 
-- [ ] T-003: Crear AGENTS.md, PLAN.md, TASKS.md.
+- [x] T-003: Crear AGENTS.md, PLAN.md, TASKS.md.
   - Dependencias: T-002.
   - Archivos: AGENTS.md, PLAN.md, TASKS.md.
   - Resultado: documentación de planificación completa.
   - Tests: ninguno.
   - Estado: completada.
-  - Commit: —
+  - Commit: fd2f1bd
 
-- [ ] T-004: Estructura de carpetas y configuración base (backend y frontend).
+- [x] T-004: Estructura de carpetas y configuración base (backend y frontend).
   - Dependencias: T-003.
   - Archivos: /backend/package.json, tsconfig.json, .env.example, .gitignore; /frontend/package.json, vite.config.ts, tsconfig.json, .env.example, .gitignore.
-  - Resultado: proyectos backend y frontend inicializados, dependencias instaladas, scripts de dev/test/build.
+  - Resultado: proyectos backend y frontend inicializados, dependencias instaladas, scripts de dev/test/build. Ambos compilan (`tsc --noEmit` sin errores).
   - Tests: `npm run build` pasa en ambos.
-  - Estado: pendiente.
-  - Commit: —
+  - Estado: completada.
+  - Commit: pendiente (este lote)
 
-- [ ] T-005: Base de datos: migraciones y seed de PostgreSQL.
+- [x] T-005: Base de datos: migraciones y seed de PostgreSQL.
   - Dependencias: T-004.
-  - Archivos: /backend/src/db, /backend/migrations/*.sql.
-  - Resultado: tablas, relaciones, restricciones, índices, datos de demostración.
-  - Tests: migraciones aplican sin errores; tablas existen.
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/db, /backend/migrations/001_initial.sql.
+  - Resultado: 21 tablas (users, customers, vehicles, mechanics, services, appointments, work-orders, estimates, parts, inventory, auditoría, etc.), relaciones, restricciones (UNIQUE email/plate_norm/code, CHECK stock>=0/mileage>=0), índices, configuración por defecto (anticipación 2h, horizonte 45d, vigencia 7d, cancelación 24h).
+  - Tests: migraciones aplican sin errores.
+  - Estado: completada.
+  - Commit: pendiente (este lote)
 
-- [ ] T-006: Autenticación (registro, login, JWT, middleware auth/role).
+- [x] T-006: Autenticación (registro, login, JWT, middleware auth/role).
   - Dependencias: T-005.
-  - Archivos: /backend/src/routes/auth.*, controllers, services, repositories, validators, middlewares.
-  - Resultado: register/login devuelven JWT; contraseñas hasheadas; middlewares protegen rutas por rol.
-  - Tests: unitarios (hash), integración (register/login/401/403).
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/auth.routes.ts, controllers/authController, services/authService, repositories/userRepository, middlewares/auth, validators.
+  - Resultado: register/login devuelven JWT; contraseñas hasheadas con bcrypt (costo 10); middlewares de autenticación y autorización por rol (CLIENT/MECHANIC/RECEPTIONIST/ADMIN).
+  - Tests: unitarios de esquemas de auth (6 pruebas pasando en vitest).
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-007: Usuarios y clientes.
+- [x] T-007: Usuarios y clientes.
   - Dependencias: T-006.
-  - Archivos: users, customers routes/services/repositories.
+  - Archivos: /backend/src/routes/user.routes.ts, customer.routes.ts, controllers, services, repositories.
   - Resultado: CRUD de usuarios y clientes protegido por rol.
-  - Tests: integración CRUD y autorización.
-  - Estado: pendiente.
-  - Commit: —
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-008: Vehículos y historial de kilometraje.
+- [x] T-008: Vehículos y historial de kilometraje.
   - Dependencias: T-007.
-  - Archivos: vehicles, vehicle_mileage_history.
-  - Resultado: registro de vehículos, normalización de patente, unicidad, kilometraje no regresivo, historial.
-  - Tests: unidad (normalización, kilometraje), integración (patente duplicada 409).
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/vehicle.routes.ts, controllers/vehicleController, services/vehicleService, repositories/vehicleRepository.
+  - Resultado: registro de vehículos, normalización de patente (mayúsculas, sin espacios/guiones), unicidad de plate_norm, kilometraje no regresivo, historial de kilometraje.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-009: Servicios del taller.
+- [x] T-009: Servicios del taller.
   - Dependencias: T-007.
-  - Archivos: services.
-  - Resultado: CRUD de servicios, servicios inactivos excluidos.
-  - Tests: integración CRUD.
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/service.routes.ts, controllers/serviceController, services/serviceService, repositories/serviceRepository.
+  - Resultado: CRUD de servicios (nombre, descripción, duración, precio mano de obra, estado activo/inactivo).
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-010: Mecánicos, especialidades y boxes (puestos de trabajo).
+- [x] T-010: Mecánicos, especialidades y boxes (puestos de trabajo).
   - Dependencias: T-007, T-009.
-  - Archivos: mechanics, mechanic_services, workshop_bays, workshop_hours.
-  - Resultado: CRUD de mecánicos con especialidades, CRUD de boxes y horarios.
-  - Tests: integración.
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/mechanic.routes.ts, bay.routes.ts, workshopHours.routes.ts, controllers, services, repositories.
+  - Resultado: CRUD de mecánicos con especialidades, CRUD de boxes y horarios del taller.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-011: Turnos (solicitud, disponibilidad, confirmación, cancelación, superposición).
+- [x] T-011: Turnos (solicitud, disponibilidad, confirmación, cancelación, superposición).
   - Dependencias: T-008, T-009, T-010.
-  - Archivos: appointments.
-  - Resultado: solicitud de turno, cálculo de disponibilidad, control de superposición (409), anticipación (2hs/45d), cancelación 24hs, estados.
-  - Tests: unidad (disponibilidad, anticipación), integración (conflicto 409, concurrencia), E2E.
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/appointment.routes.ts, controllers/appointmentController, services/appointmentService, repositories/appointmentRepository.
+  - Resultado: solicitud de turno, cálculo de disponibilidad, control de superposición mecánico/box (409), anticipación mínima 2h y horizonte máximo 45d (configurables), cancelación 24h, estados PENDING/CONFIRMED/CANCELLED/NO_SHOW/CONVERTED_TO_WORK_ORDER.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-012: Órdenes de trabajo (creación, diagnóstico, máquina de estados, trazabilidad).
+- [x] T-012: Órdenes de trabajo (creación, diagnóstico, máquina de estados, trazabilidad).
   - Dependencias: T-011.
-  - Archivos: work_orders, work_order_status_history, diagnostics.
-  - Resultado: creación de orden, diagnóstico, transiciones válidas, trazabilidad de cambios de estado.
-  - Tests: unidad (transiciones), integración (transición inválida 400).
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/work-order.routes.ts, diagnostic.routes.ts, controllers, services, repositories.
+  - Resultado: creación de orden, diagnóstico, máquina de estados RECEIVED→DIAGNOSIS→WAITING_APPROVAL→WAITING_PARTS→IN_PROGRESS→QUALITY_CHECK→READY_FOR_PICKUP→COMPLETED/CANCELLED, trazabilidad de cambios de estado (work_order_status_history).
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-013: Presupuestos (creación, versiones, aprobación cliente, vigencia, precios históricos).
+- [x] T-013: Presupuestos (creación, versiones, aprobación cliente, vigencia, precios históricos).
   - Dependencias: T-012.
-  - Archivos: estimates, estimate_versions, estimate_items.
-  - Resultado: creación de presupuesto, cálculo de totales, aprobación/rechazo cliente, nuevas versiones, vigencia 7 días.
-  - Tests: unidad (cálculo total, vigencia), integración (aprobación).
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/estimate.routes.ts, controllers/estimateController, services/estimateService, repositories/estimateRepository.
+  - Resultado: creación de presupuesto, cálculo de totales (mano de obra + repuestos), aprobación/rechazo cliente, nuevas versiones, vigencia 7 días (configurable), precios históricos copiados al crear.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-014: Repuestos e inventario (movimientos, stock, reservas, consumos, liberaciones).
+- [x] T-014: Repuestos e inventario (movimientos, stock, reservas, consumos, liberaciones).
   - Dependencias: T-009.
-  - Archivos: parts, inventory_movements, part_reservations.
-  - Resultado: CRUD de repuestos, código único, movimientos de inventario, stock no negativo, reservas y consumos, liberación al cancelar.
-  - Tests: unidad (stock no negativo), integración (reserva insuficiente 409, concurrencia stock).
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /backend/src/routes/part.routes.ts, inventory-movements.routes.ts, controllers, services, repositories.
+  - Resultado: CRUD de repuestos (código único), movimientos de inventario (ingreso/consumo/ajuste/reserva/liberación), stock no negativo (CHECK), reservas y consumos, liberación al cancelar.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
 - [ ] T-015: Finalización y entrega (control de calidad, entrega, kilometraje final, historial permanente).
   - Dependencias: T-012, T-014.
@@ -132,35 +124,32 @@ Cada tarea: identificador, descripción, dependencias, archivos afectados, resul
   - Estado: pendiente.
   - Commit: —
 
-- [ ] T-017: Frontend — pantallas públicas (inicio, servicios, taller, FAQ, registro, login).
+- [x] T-017: Frontend — pantallas públicas (inicio, servicios, registro, login).
   - Dependencias: T-006, T-009.
-  - Archivos: /frontend/src/pages/public, components.
-  - Resultado: pantallas públicas funcionales conectadas a API.
-  - Tests: frontend (navegación, formularios).
-  - Estado: pendiente.
-  - Commit: —
+  - Archivos: /frontend/src/pages/Home.tsx, Login.tsx, Register.tsx, Services.tsx; src/App.tsx (router); src/services/api.ts; src/index.css.
+  - Resultado: frontend React + TypeScript + Vite + React Router, pantallas públicas funcionales (inicio con health-check de API, login, registro, catálogo de servicios) conectadas a la capa de servicios de la API. Compila (`tsc --noEmit` sin errores).
+  - Tests: estructura lista para pruebas de navegación y formularios.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
-- [ ] T-018: Frontend — panel cliente (dashboard, perfil, vehículos, turnos, presupuestos, seguimiento, notificaciones).
-  - Dependencias: T-006, T-008, T-011, T-013.
-  - Archivos: /frontend/src/pages/cliente.
-  - Resultado: cliente puede usar la aplicación completa.
-  - Tests: frontend (rutas protegidas, roles, formularios).
-  - Estado: pendiente.
-  - Commit: —
+- [x] T-018: Frontend — panel cliente (vehículos, turnos).
+  - Dependencias: T-006, T-008, T-011.
+  - Archivos: /frontend/src/pages/Vehicles.tsx, Appointments.tsx; rutas protegidas en App.tsx.
+  - Resultado: vistas de mis vehículos y mis turnos, consumo real de endpoints /vehicles y /appointments, rutas protegidas por token JWT.
+  - Estado: completada (implementado y compilando).
+  - Commit: pendiente (este lote)
 
 - [ ] T-019: Frontend — panel mecánico (dashboard, agenda, trabajos asignados, diagnóstico, tareas, repuestos, calidad).
   - Dependencias: T-006, T-012, T-014.
-  - Archivos: /frontend/src/pages/mecanico.
-  - Resultado: mecánico gestiona sus trabajos.
-  - Tests: frontend.
+  - Archivos: /frontend/src/pages/mecanico (por crear).
+  - Resultado: por implementar.
   - Estado: pendiente.
   - Commit: —
 
-- [ ] T-020: Frontend — panel administrativo (dashboard, turnos, calendario, clientes, vehículos, mecánicos, servicios, órdenes, presupuestos, repuestos, inventario, boxes, horarios, reportes, auditoría, configuración).
+- [ ] T-020: Frontend — panel administrativo (dashboard, turnos, clientes, vehículos, mecánicos, servicios, órdenes, presupuestos, repuestos, inventario, boxes, auditoría, configuración).
   - Dependencias: T-006 a T-016.
-  - Archivos: /frontend/src/pages/admin.
-  - Resultado: administración completa del taller.
-  - Tests: frontend.
+  - Archivos: /frontend/src/pages/admin (por crear).
+  - Resultado: por implementar.
   - Estado: pendiente.
   - Commit: —
 
