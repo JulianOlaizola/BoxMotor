@@ -92,4 +92,9 @@ export const api = {
   estimatesList: () => json<any[]>('/estimates'),
 
   partsList: () => json<any[]>('/parts'),
+
+  customersList: () => json<any[]>('/customers'),
+  mechanicsList: () => json<any[]>('/mechanics'),
+  inventoryMovementsList: () => json<any[]>('/inventory-movements'),
+  auditLogsList: () => json<any[]>('/audit-logs'),
 };

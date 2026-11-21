@@ -5,6 +5,8 @@ import Register from './pages/Register';
 import Vehicles from './pages/Vehicles';
 import Services from './pages/Services';
 import Appointments from './pages/Appointments';
+import MecanicoDashboard from './pages/mecanico';
+import AdminDashboard from './pages/admin';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('boxmotor_token');
@@ -26,6 +28,8 @@ export default function App() {
               <>
                 <a href="/vehiculos" className="nav-link">Mis vehiculos</a>
                 <a href="/turnos" className="nav-link">Turnos</a>
+                <a href="/mecanico" className="nav-link">Panel mecánico</a>
+                <a href="/admin" className="nav-link">Administración</a>
                 <a href="/logout" className="nav-link" onClick={(e) => {
                   e.preventDefault();
                   localStorage.removeItem('boxmotor_token');
@@ -61,6 +65,22 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Appointments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mecanico"
+            element={
+              <ProtectedRoute>
+                <MecanicoDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
               </ProtectedRoute>
             }
           />
