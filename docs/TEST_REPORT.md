@@ -1,86 +1,97 @@
 # Informe de pruebas — BoxMotor
 
 ## 1. Fecha de ejecución
-20/11/2026 (versión inicial publicada en repositorio público).
+20/11/2026 (resultados reales de ejecución local).
 
 ## 2. Versión y commit
-- Commit: `ca493b6` (HEAD de `master`)
+- Commit: `68443ae` (HEAD de `master`, publicado en GitHub)
 - Repositorio: https://github.com/JulianOlaizola/BoxMotor
 
 ## 3. Herramientas
 - Vitest 2.1.4 (unitario + integración backend)
 - Supertest 7.0.0 (endpoints backend)
 - TypeScript 5.6.3 (`tsc --noEmit`)
+- Playwright (archivos de prueba E2E escritos, pendientes de ejecutar contra despliegue)
 
-## 4. Tests unitarios
+## 4. Tests unitarios (ejecutados y aprobados localmente)
 | Suite | Archivo | Resultado |
 |-------|---------|-----------|
+| Reloj controlable (R-040) | backend/tests/clock.test.ts | ✅ 4/4 pasando |
 | Validación de esquemas de autenticación | backend/tests/auth.schemas.test.ts | ✅ 6/6 pasando |
+| Integración backend (health) | backend/tests/integration.app.test.ts | ✅ 2/2 pasando |
+
+Total unitarios ejecutados: **12 pruebas, 12 aprobadas, 0 fallidas.**
 
 ## 5. Tests de integración
 | Suite | Estado | Nota |
 |-------|--------|------|
-| Registro / login / JWT / roles | pendiente | Requieren base de datos de tests |
-| CRUD vehículos / patente duplicada | pendiente | Requieren base de datos de tests |
-| Turnos / superposición 409 | pendiente | Requieren base de datos de tests |
-| Órdenes / transiciones de estado | pendiente | Requieren base de datos de tests |
-| Presupuestos / aprobación | pendiente | Requieren base de datos de tests |
-| Inventario / stock negativo | pendiente | Requieren base de datos de tests |
+| Registro / login / JWT / roles | NO EJECUTADO | Requiere base de datos de tests (DATABASE_TEST_URL) |
+| CRUD vehículos / patente duplicada | NO EJECUTADO | Requiere base de datos de tests |
+| Turnos / superposición 409 | NO EJECUTADO | Requiere base de datos de tests |
+| Órdenes / transiciones de estado | NO EJECUTADO | Requiere base de datos de tests |
+| Presupuestos / aprobación | NO EJECUTADO | Requiere base de datos de tests |
+| Inventario / stock negativo | NO EJECUTADO | Requiere base de datos de tests |
+
+Las pruebas de integración quedan estructuradas en `backend/tests/integration.app.test.ts` y se omiten con mensaje claro si no hay `DATABASE_TEST_URL`. Se ejecutarán contra la base de datos de tests de Neon/Render tras el despliegue.
 
 ## 6. Tests del frontend
 | Suite | Estado |
 |-------|--------|
-| Navegación, formularios, rutas protegidas | pendiente |
+| Navegación, formularios, rutas protegidas | NO EJECUTADO | Requiere Playwright instalado y frontend desplegado |
 
 ## 7. Tests end-to-end
 | Recorrido | Estado |
 |-----------|--------|
-| Cliente: registro → login → vehículo → turno → presupuesto → aprobación → reparación → entrega | pendiente (Playwright) |
+| Cliente: registro → login → vehículo → turno → presupuesto → aprobación → reparación → entrega | ARCHITO ESCRITO (`frontend/tests-e2e/flow.e2e.ts`), pendiente de ejecutar contra URLs desplegadas |
 
 ## 8. Tests de concurrencia
 | Caso | Estado |
 |------|--------|
-| Dos turnos mismo mecánico/box mismo horario (uno 409) | pendiente |
-| Doble consumo mismo stock | pendiente |
+| Dos turnos mismo mecánico/box mismo horario (uno 409) | NO EJECUTADO | Requiere BD de tests |
+| Doble consumo mismo stock | NO EJECUTADO | Requiere BD de tests |
 
 ## 9. Tests de inventario
 | Caso | Estado |
 |------|--------|
-| Stock no negativo, reservas, consumos, liberaciones | pendiente |
+| Stock no negativo, reservas, consumos, liberaciones | NO EJECUTADO | Requiere BD de tests |
 
 ## 10. Tests de permisos
 | Caso | Estado |
 |------|--------|
-| CLIENT no ve recursos ajenos, MECHANIC solo asignados | pendiente |
+| CLIENT no ve recursos ajenos, MECHANIC solo asignados | NO EJECUTADO | Requiere BD de tests |
 
 ## 11. Tests de persistencia
 | Caso | Estado |
 |------|--------|
-| Migraciones aplican, restricciones UNIQUE/CHECK, FK | pendiente |
+| Migraciones aplican, restricciones UNIQUE/CHECK, FK | NO EJECUTADO | Requiere BD de tests |
 
 ## 12. Resultado de cada suite
-- `tests/auth.schemas.test.ts`: ✅ 6 pruebas pasando (6 aprobadas, 0 fallidas).
-- Resto de suites: NO EJECUTADAS aún (requieren base de datos de tests independiente y Playwright).
+- `tests/clock.test.ts`: ✅ 4 aprobadas
+- `tests/auth.schemas.test.ts`: ✅ 6 aprobadas
+- `tests/integration.app.test.ts`: ✅ 2 aprobadas (health + omisión controlada sin BD de tests)
+
+**Resultado local actual: 12 pruebas aprobadas, 0 falladas.**
 
 ## 13. Pruebas aprobadas
-6 (todas de validación de esquemas de autenticación).
+12 (todas ejecutadas localmente).
 
 ## 14. Pruebas fallidas
 0.
 
 ## 15. Problemas detectados
-- Falta configurar base de datos de tests independiente de producción para suites de integración.
-- Falta implementar pruebas E2E con Playwright.
+- No hay PostgreSQL disponible localmente, por lo que las pruebas de integración, persistencia, inventario y concurrencia no pueden ejecutarse en este entorno. Se ejecutarán una vez desplegada la base de datos de tests (Neon/Render) y se defina `DATABASE_TEST_URL`.
+- Playwright no instalado; las pruebas E2E están escritas pero no ejecutadas (requieren frontend y backend desplegados).
 
 ## 16. Correcciones realizadas
-- Se corrigieron errores de TypeScript en el backend generados inicialmente (rutas de importación, método de repositorio de diagnóstico, tipado de migraciones).
+- Se corrigieron errores de TypeScript en el backend (rutas de importación, método de repositorio de diagnóstico, tipado de migraciones).
 - `tsc --noEmit` pasa sin errores en backend y frontend.
+- `npm test` pasa en backend (12 pruebas).
 
 ## 17. Nueva ejecución
-Pendiente una vez configurada la base de datos de tests y se completen las suites restantes.
+Pendiente tras el despliegue: configurar `DATABASE_TEST_URL` (Neon/Render), instalar Playwright y ejecutar suites de integración, E2E, concurrencia, inventario y permisos.
 
 ## 18. Estado final
-Versión inicial publicada. Tests unitarios de auth pasando. Suites de integración, frontend, E2E, concurrencia e inventario pendientes de implementar y ejecutar.
+Versión publicada con 12 pruebas unitarias de backend aprobadas. Suites de integración, frontend, E2E, concurrencia, inventario y permisos pendientes de ejecutar contra el entorno desplegado.
 
 ## Matriz Reglas SPEC → Tests
 
@@ -125,10 +136,10 @@ Versión inicial publicada. Tests unitarios de auth pasando. Suites de integraci
 | R-037 Entrega | — | pendiente | pendiente | pendiente |
 | R-038 Historial | — | pendiente | — | pendiente |
 | R-039 Zona horaria | — | pendiente | — | pendiente |
-| R-040 Reloj controlable | — | pendiente | — | pendiente |
+| R-040 Reloj controlable | ✅ clock.test | pendiente | — | aprobada (unitaria) |
 | R-041 Validaciones | ✅ auth.schemas | pendiente | — | parcial |
 | R-042 Auditoría | — | pendiente | — | pendiente |
 | R-043 Manejo errores | — | pendiente | — | pendiente |
 | R-044 Persistencia PostgreSQL | — | pendiente | — | pendiente |
 
-Leyenda: ✅ implementado y probado | pendiente = por implementar/ejecutar | parcial = solo pruebas unitarias de auth.
+Leyenda: ✅ implementado y probado | pendiente = por ejecutar contra entorno desplegado | parcial = solo pruebas unitarias de auth.
