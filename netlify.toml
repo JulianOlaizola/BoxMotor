@@ -1,0 +1,14 @@
+[build]
+  base = "frontend"
+  publish = "dist"
+  command = "npm install && npm run build"
+
+[dev]
+  port = 5173
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"

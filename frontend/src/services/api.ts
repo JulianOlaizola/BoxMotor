@@ -2,6 +2,14 @@
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
+function baseUrl(input: RequestInfo | URL): string {
+  const u = input instanceof URL ? input : new URL(String(input), API_BASE || undefined);
+  if (API_BASE && !String(input).startsWith('http')) {
+    return API_BASE.endsWith('/') ? API_BASE + String(input).replace(/^\//, '') : API_BASE + String(input);
+  }
+  return String(input);
+}
+
 function getToken(): string | null {
   if (typeof localStorage === 'undefined') return null;
   return localStorage.getItem('boxmotor_token');
@@ -11,6 +19,7 @@ async function request(
   input: RequestInfo | URL,
   init: RequestInit = {}
 ): Promise<Response> {
+  const url = baseUrl(input);
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(init.headers as Record<string, string>),
@@ -21,7 +30,7 @@ async function request(
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(input, {
+  const response = await fetch(url, {
     ...init,
     headers,
   });

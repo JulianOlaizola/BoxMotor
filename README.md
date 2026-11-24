@@ -117,9 +117,11 @@ cd backend
 cp .env.example .env   # editar con valores reales
 npm install
 npm run migrate        # aplica migraciones y seed
-npm run build          # typecheck
-npm test               # pruebas (6 pruebas iniciales pasando)
-npm run dev            # servidor en puerto 4000
+npm run build          # compila a dist/ (producción)
+npm run typecheck      # typecheck (tsc --noEmit)
+npm start              # servidor en puerto 4000 (node dist/server.js)
+npm run dev            # servidor con tsx (desarrollo)
+npm run migrate        # aplica migraciones SQL a PostgreSQL
 
 # Frontend (desde la raíz)
 cd ../frontend
@@ -167,7 +169,7 @@ cd backend
 npm test
 ```
 
-Suite inicial: 6 pruebas pasando (validación de esquemas de autenticación: registro, login, email, contraseña, nombre).
+Suite de pruebas: 12 pruebas pasando (reloj controlable R-040, validaciones de autenticación, health-check).
 
 ## Migraciones
 
@@ -179,14 +181,43 @@ El sistema incluye configuración base para crear cuentas de demostración (clie
 
 ## URLs publicadas
 
-- Repositorio público (GitHub): por configurar
-- Frontend: por configurar (Netlify u similar)
-- Backend: por configurar (Render u similar)
-- PostgreSQL: por configurar (Neon u similar)
+- Repositorio público (GitHub): https://github.com/JulianOlaizola/BoxMotor
+- Frontend: por configurar (Netlify) — definir `VITE_API_URL` con la URL del backend
+- Backend: por configurar (Render) — definir `FRONTEND_URL` con la URL del frontend
+- PostgreSQL: por configurar (Neon) — definir `DATABASE_URL` en el backend
+
+## Despliegue en producción (Netlify + Render + Neon)
+
+### 1. Base de datos (Neon)
+- Crear un proyecto y una base de datos `boxmotor` en Neon.
+- Copiar la cadena de conexión (con SSL) → variable `DATABASE_URL` del backend.
+
+### 2. Backend (Render)
+- Conectar el repositorio GitHub a Render como servicio Web (Node).
+- Build command: `npm install && npm run build`
+- Start command: `npm start`
+- Variables de entorno en el panel de Render:
+  - `DATABASE_URL` (de Neon)
+  - `FRONTEND_URL` (URL del frontend en Netlify)
+  - `JWT_SECRET` (secreto fuerte, generar en el panel)
+  - `NODE_ENV=production`
+  - `PORT=4000`
+  - `ADMIN_BOOTSTRAP_EMAIL` y `ADMIN_BOOTSTRAP_PASSWORD` (opcionales, solo para bootstrap inicial)
+- Ejecutar migración en la consola de Render: `npm run migrate` (aplica `backend/migrations/001_initial.sql`).
+
+### 3. Frontend (Netlify)
+- Conectar el repositorio GitHub a Netlify.
+- Base directory: `frontend`
+- Build command: `npm install && npm run build`
+- Publish directory: `dist`
+- Variable de entorno: `VITE_API_URL` (URL del backend en Render).
+
+### 4. CORS
+El backend acepta peticiones desde el origen configurado en `FRONTEND_URL`. Asegúrate de que coincida con la URL de Netlify.
 
 ## Documentación de API
 
-Todos los endpoints están documentados en `docs/API.md` (pendiente de completar con el despliegue). Los contratos incluyen método, ruta, parámetros, body, respuesta, errores, código HTTP, autenticación y permisos.
+Todos los endpoints están documentados en `docs/API.md`. Los contratos incluyen método, ruta, parámetros, body, respuesta, errores, código HTTP, autenticación y permisos.
 
 ## Enlaces obligatorios
 
