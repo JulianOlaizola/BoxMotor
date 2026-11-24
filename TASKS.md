@@ -186,13 +186,16 @@ Cada tarea: identificador, descripción, dependencias, archivos afectados, resul
   - Commit: 68443ae (repositorio creado y push de todo el historial)
   - URL: https://github.com/JulianOlaizola/BoxMotor
 
-- [ ] T-025: Desplegar frontend, backend y base de datos en internet.
-  - Dependencias: T-024 (requiere autenticación del usuario en proveedores).
-  - Archivos: variables de entorno en paneles de hosting.
-  - Resultado: frontend, backend y PostgreSQL publicados y conectados.
-  - Tests: health check, endpoints desde internet.
-  - Estado: pendiente (bloqueado pendiente autenticación proveedores).
-  - Commit: —
+- [x] T-025: Despliegue preparado (pendiente de recursos del usuario en Netlify/Render/Neon).
+  - Dependencias: T-024.
+  - Archivos: netlify.toml, render.yaml, backend/package.json (scripts de producción),
+    frontend/src/services/api.ts (VITE_API_URL), README.md (pasos de despliegue).
+  - Resultado: configuración de despliegue lista. Falta que el usuario cree los recursos
+    en Neon (PostgreSQL), Render (backend) y Netlify (frontend) y configure las variables
+    de entorno en cada panel. No se inventaron URLs ni credenciales.
+  - Tests: health check y endpoints desde internet (pendiente de despliegue).
+  - Estado: preparada; bloqueada pendiente de que el usuario proporcione los recursos.
+  - Commit: 2148995
 
 - [ ] T-026: Validación desde internet (flujo completo cliente/mecánico/admin).
   - Dependencias: T-025.
