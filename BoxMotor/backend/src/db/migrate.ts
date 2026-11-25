@@ -13,7 +13,27 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  */
 dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
 
-const MIGRATIONS_DIR = path.resolve(__dirname, '..', 'migrations');
+/**
+ * Resuelve el directorio de migraciones de forma robusta para ambos entornos:
+ *  - Desarrollo: se ejecuta con tsx desde backend/src/db/migrate.ts, por lo que
+ *    __dirname = backend/src/db y subiendo dos niveles llega a backend/.
+ *  - Producción: se ejecude compilado desde backend/dist/src/db/migrate.js, por lo que
+ *    __dirname = backend/dist/src/db y subiendo dos niveles llega a backend/dist/,
+ *    donde no existe migrations/. Se busca hacia arriba hasta encontrar el directorio
+ *    migrations/ (que vive en backend/migrations/).
+ */
+function resolveMigrationsDir(): string {
+  let dir = __dirname;
+  for (let i = 0; i < 5; i++) {
+    const candidate = path.resolve(dir, 'migrations');
+    if (fs.existsSync(candidate)) return candidate;
+    dir = path.resolve(dir, '..');
+  }
+  // Fallback al comportamiento original por compatibilidad.
+  return path.resolve(__dirname, '..', '..', 'migrations');
+}
+
+const MIGRATIONS_DIR = resolveMigrationsDir();
 
 /**
  * Detecta si este módulo se está ejecutando directamente (npm run migrate),

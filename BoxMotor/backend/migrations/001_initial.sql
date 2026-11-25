@@ -177,6 +177,22 @@ CREATE TABLE diagnostics (
 );
 CREATE INDEX idx_diagnostics_work_order_id ON diagnostics(work_order_id);
 
+-- Repuestos (creado antes de las tablas que lo referencian)
+CREATE TABLE parts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  code VARCHAR(50) NOT NULL UNIQUE,
+  name VARCHAR(150) NOT NULL,
+  description TEXT,
+  brand VARCHAR(100),
+  category VARCHAR(100),
+  price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
+  quantity_available INTEGER NOT NULL DEFAULT 0 CHECK (quantity_available >= 0),
+  min_stock INTEGER NOT NULL DEFAULT 0 CHECK (min_stock >= 0),
+  active BOOLEAN NOT NULL DEFAULT TRUE
+);
+CREATE INDEX idx_parts_code ON parts(code);
+CREATE INDEX idx_parts_active ON parts(active);
+
 -- Items de orden de trabajo (repuestos usados)
 CREATE TABLE work_order_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -227,22 +243,6 @@ CREATE TABLE estimate_items (
   subtotal NUMERIC(10,2) NOT NULL CHECK (subtotal >= 0)
 );
 CREATE INDEX idx_estimate_items_estimate_id ON estimate_items(estimate_id);
-
--- Repuestos
-CREATE TABLE parts (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  code VARCHAR(50) NOT NULL UNIQUE,
-  name VARCHAR(150) NOT NULL,
-  description TEXT,
-  brand VARCHAR(100),
-  category VARCHAR(100),
-  price NUMERIC(10,2) NOT NULL CHECK (price >= 0),
-  quantity_available INTEGER NOT NULL DEFAULT 0 CHECK (quantity_available >= 0),
-  min_stock INTEGER NOT NULL DEFAULT 0 CHECK (min_stock >= 0),
-  active BOOLEAN NOT NULL DEFAULT TRUE
-);
-CREATE INDEX idx_parts_code ON parts(code);
-CREATE INDEX idx_parts_active ON parts(active);
 
 -- Movimientos de inventario
 CREATE TABLE inventory_movements (
