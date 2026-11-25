@@ -39,10 +39,10 @@ Cada tarea: identificador, descripción, dependencias, archivos afectados, resul
 - [x] T-005: Base de datos: migraciones y seed de PostgreSQL.
   - Dependencias: T-004.
   - Archivos: /backend/src/db, /backend/migrations/001_initial.sql.
-  - Resultado: 21 tablas (users, customers, vehicles, mechanics, services, appointments, work-orders, estimates, parts, inventory, auditoría, etc.), relaciones, restricciones (UNIQUE email/plate_norm/code, CHECK stock>=0/mileage>=0), índices, configuración por defecto (anticipación 2h, horizonte 45d, vigencia 7d, cancelación 24h).
-  - Tests: migraciones aplican sin errores.
+  - Resultado: 21 tablas (users, customers, vehicles, mechanics, services, appointments, work-orders, estimates, parts, inventory, auditoría, etc.), relaciones, restricciones (UNIQUE email/plate_norm/code, CHECK stock>=0/mileage>=0), índices, configuración por defecto (anticipación 2h, horizonte 45d, vigencia 7d, cancelación 24h). Corregida ruta de migraciones para desarrollo (tsx) y producción (dist); reordenada tabla parts antes de work_order_items, estimate_items, inventory_movements y part_reservations para respetar claves foraneas.
+  - Tests: typecheck, build y 12/12 pruebas backend pasando.
   - Estado: completada.
-  - Commit: d0020db
+  - Commit: dbbc745
 
 - [x] T-006: Autenticación (registro, login, JWT, middleware auth/role).
   - Dependencias: T-005.
