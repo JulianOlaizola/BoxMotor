@@ -14,5 +14,12 @@ export type PoolLike = {
     text: string,
     params?: unknown[]
   ) => Promise<{ rows: unknown[]; rowCount: number }>;
+  connect: () => Promise<{
+    query: (
+      text: string,
+      params?: unknown[]
+    ) => Promise<{ rows: unknown[]; rowCount: number }>;
+    release: () => void;
+  }>;
 };
 
