@@ -13,7 +13,7 @@ export function validate(
       if (err instanceof ZodError) {
         const e: any = new Error('Validacion fallida');
         e.statusCode = 400;
-        e.details = err.errors.map((e) => ({
+        e.details = err.issues.map((e) => ({
           field: e.path.join('.'),
           message: e.message,
         }));
