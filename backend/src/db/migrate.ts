@@ -1,7 +1,12 @@
 ﻿import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 import { pool } from './pool.js';
+
+// Carga variables de entorno desde backend/.env (ignorado por Git).
+// Permite ejecutar migraciones localmente contra Neon sin depender de Render Shell.
+dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MIGRATIONS_DIR = path.resolve(__dirname, '..', 'migrations');

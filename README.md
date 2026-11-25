@@ -207,6 +207,16 @@ El sistema incluye configuración base para crear cuentas de demostración (clie
 - Ejecutar migración en la consola de Render (Shell): `npm run migrate`
   (aplica `backend/migrations/001_initial.sql`, idempotente).
 
+> **Nota para plan gratuito de Render (sin Shell/SSH):**
+> Render gratuito no permite acceso a Shell. Ejecuta la migración desde tu entorno
+> local contra Neon:
+> 1. Crea la base de datos en Neon y obtén la cadena de conexión `DATABASE_URL` (con SSL).
+> 2. Crea el archivo `backend/.env` (ignorado por Git, no lo subas) con:
+>    `DATABASE_URL=<tu-cadena-de-conexion-de-Neon>`
+> 3. Ejecuta: `cd backend && npm run migrate`
+>    El script `backend/src/db/migrate.ts` carga `.env` (dotenv) y aplica
+>    `backend/migrations/001_initial.sql` contra Neon. Es idempotente (usa `schema_migrations`).
+
 ### 3. Frontend (Netlify)
 - Conectar el repositorio GitHub a Netlify.
 - Base directory: `frontend`
