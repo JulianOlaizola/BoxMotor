@@ -3,7 +3,8 @@ services:
     name: boxmotor-backend
     env: node
     region: ohio
-    buildCommand: "npm install && npm run build"
+    rootDir: backend
+    buildCommand: "npm install --include=dev && npm run build"
     startCommand: "npm start"
     envVars:
       - key: DATABASE_URL
@@ -21,7 +22,6 @@ services:
       - key: ADMIN_BOOTSTRAP_PASSWORD
         sync: false
 
-databases:
-  - name: boxmotor-db
-    databaseName: boxmotor
-    user: boxmotor
+# Migraciones: tras el despliegue inicial, ejecutar en la consola de Render
+# (Shell del servicio): npm run migrate
+# Aplica backend/migrations/001_initial.sql (idempotente, usa schema_migrations).

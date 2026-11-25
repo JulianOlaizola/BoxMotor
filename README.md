@@ -194,16 +194,18 @@ El sistema incluye configuración base para crear cuentas de demostración (clie
 
 ### 2. Backend (Render)
 - Conectar el repositorio GitHub a Render como servicio Web (Node).
-- Build command: `npm install && npm run build`
+- Root directory: `backend`
+- Build command: `npm install --include=dev && npm run build`
 - Start command: `npm start`
 - Variables de entorno en el panel de Render:
-  - `DATABASE_URL` (de Neon)
+  - `DATABASE_URL` (de Neon, con SSL)
   - `FRONTEND_URL` (URL del frontend en Netlify)
   - `JWT_SECRET` (secreto fuerte, generar en el panel)
   - `NODE_ENV=production`
-  - `PORT=4000`
+  - `PORT=4000` (Render inyecta este valor automáticamente)
   - `ADMIN_BOOTSTRAP_EMAIL` y `ADMIN_BOOTSTRAP_PASSWORD` (opcionales, solo para bootstrap inicial)
-- Ejecutar migración en la consola de Render: `npm run migrate` (aplica `backend/migrations/001_initial.sql`).
+- Ejecutar migración en la consola de Render (Shell): `npm run migrate`
+  (aplica `backend/migrations/001_initial.sql`, idempotente).
 
 ### 3. Frontend (Netlify)
 - Conectar el repositorio GitHub a Netlify.
